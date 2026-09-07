@@ -1,0 +1,48 @@
+{
+  "name": "@molecare/scale-reference",
+  "version": "0.1.0",
+  "description": "Pixel↔mm conversion from known-diameter reference objects.",
+  "main": "src/index.js",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoleCare/rn-scale-reference.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MoleCare/rn-scale-reference/issues"
+  },
+  "homepage": "https://github.com/MoleCare/rn-scale-reference#readme",
+  "keywords": [
+    "react-native",
+    "scale",
+    "calibration",
+    "measurement",
+    "healthcare"
+  ],
+  "peerDependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "echo \"no lint configured yet\""
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md"
+  ],
+  "publishConfig": {
+    "access": "restricted"
+  }
+}
