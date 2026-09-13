@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "types": []
+  },
+  "include": ["src"],
+  "exclude": ["__tests__", "lib"]
+}

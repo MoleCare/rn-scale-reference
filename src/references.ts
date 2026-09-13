@@ -1,17 +1,25 @@
 /**
- * Constants only. Nothing in this package keeps state: settings are passed to
- * each call, and these are the values used when a caller passes none.
+ * Objects of known size that can serve as a scale reference.
  *
  * `exact` means the object is round, so an ellipse fitted to it has the
  * published diameter as its major axis. A polygon (the 12-sided £1, the
  * seven-sided 20p) does not fit an ellipse exactly, so its scale is rougher.
  * Diameters are the issuers' published figures.
  */
+export interface ReferenceObject {
+  readonly label: string;
+  readonly diameterMm: number;
+  readonly exact: boolean;
+}
 
-const reference = (label, diameterMm, exact) =>
-  Object.freeze({label, diameterMm, exact});
+const reference = (
+  label: string,
+  diameterMm: number,
+  exact: boolean
+): ReferenceObject => Object.freeze({ label, diameterMm, exact });
 
-export const DEFAULT_REFERENCES = Object.freeze({
+/** A frozen convenience table. Nothing in the package reads it for you. */
+export const REFERENCE_OBJECTS = Object.freeze({
   STICKER_10MM: reference('10mm calibration sticker', 10, true),
   // Royal Mint: 12-sided, 23.43 mm.
   GBP_1: reference('UK £1', 23.43, false),
@@ -24,7 +32,4 @@ export const DEFAULT_REFERENCES = Object.freeze({
   USD_PENNY: reference('US penny', 19.05, true),
 });
 
-export const DEFAULT_OPTIONS = Object.freeze({
-  maxTiltDegrees: 30,
-  minReferencePixels: 40,
-});
+export type ReferenceKey = keyof typeof REFERENCE_OBJECTS;
