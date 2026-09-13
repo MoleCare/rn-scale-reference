@@ -1,6 +1,6 @@
 {
   "name": "@molecare/scale-reference",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Estimate sizes in a photo from a reference object of known size (sticker or coin): pixel to millimetre scale, tilt checks and comparability. Pure JavaScript.",
   "main": "src/index.js",
   "license": "Apache-2.0",
