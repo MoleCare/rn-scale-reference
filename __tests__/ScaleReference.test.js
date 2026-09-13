@@ -185,4 +185,28 @@ describe('the reference table', () => {
       expect(key).toBe(key.toUpperCase());
     }
   });
+
+  it('uses the Royal Mint sizes, and calls only round objects exact', () => {
+    // The £1 was listed at 23.03 mm; the Royal Mint gives 23.43 mm. The £1
+    // (12 sides) and 20p (7 sides) are polygons, which an ellipse fit does
+    // not match exactly.
+    const refs = ScaleReference.REFERENCES;
+    expect(refs.GBP_1).toMatchObject({diameterMm: 23.43, exact: false});
+    expect(refs.GBP_20P).toMatchObject({diameterMm: 21.4, exact: false});
+    for (const key of ['STICKER_10MM', 'GBP_2', 'EUR_1', 'EUR_2', 'USD_QUARTER', 'USD_PENNY']) {
+      expect(refs[key].exact).toBe(true);
+    }
+  });
+
+  it('cannot be changed for everyone by mutating a default entry', () => {
+    // getConfig() copies the catalog, but the entries were shared objects: one
+    // module changing a diameter changed it for the whole app.
+    const {DEFAULT_REFERENCES} = require('../src/config');
+    expect(Object.isFrozen(DEFAULT_REFERENCES.STICKER_10MM)).toBe(true);
+    expect(() => {
+      'use strict';
+      ScaleReference.REFERENCES.STICKER_10MM.diameterMm = 99;
+    }).toThrow(TypeError);
+    expect(ScaleReference.REFERENCES.STICKER_10MM.diameterMm).toBe(10);
+  });
 });

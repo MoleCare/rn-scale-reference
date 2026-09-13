@@ -1,7 +1,7 @@
 {
   "name": "@molecare/scale-reference",
   "version": "0.1.0",
-  "description": "Pixel↔mm conversion from known-diameter reference objects.",
+  "description": "Estimate sizes in a photo from a reference object of known size (sticker or coin): pixel to millimetre scale, tilt checks and comparability. Pure JavaScript.",
   "main": "src/index.js",
   "license": "Apache-2.0",
   "repository": {
@@ -17,9 +17,9 @@
     "scale",
     "calibration",
     "measurement",
-    "healthcare"
+    "photo",
+    "coin"
   ],
-  "peerDependencies": {},
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",
@@ -33,8 +33,7 @@
     }
   },
   "scripts": {
-    "test": "jest",
-    "lint": "echo \"no lint configured yet\""
+    "test": "jest"
   },
   "files": [
     "src",
@@ -43,6 +42,6 @@
     "SECURITY.md"
   ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

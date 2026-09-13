@@ -62,6 +62,10 @@ export default class ScaleReference {
   }
 
   /**
+   * An estimate, not a measurement. The 0.1 mm rounding is for display; the
+   * real error is larger (tilt, reference not level with the subject, lens
+   * distortion, detection), see "Limits" in the README.
+   *
    * @param {number} pixels
    * @param {Object} scale - a result from fromEllipse
    * @returns {number|null} millimetres, rounded to 0.1mm
@@ -105,7 +109,7 @@ export default class ScaleReference {
       case 'reference_too_small':
         return 'The reference object is too small in the photo to measure from. Move closer, or place it nearer the subject.';
       case 'reference_too_tilted':
-        return 'The reference object is at too much of an angle. Hold the camera square to the skin so the object looks round rather than oval.';
+        return 'The reference object is at too much of an angle. Hold the camera square to the subject so the object looks round rather than oval.';
       default:
         return 'This photo cannot be measured. Place a reference object flat beside the subject and take it square on.';
     }
