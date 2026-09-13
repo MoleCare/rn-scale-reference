@@ -62,7 +62,7 @@
     "format": "prettier --check .",
     "format:write": "prettier --write .",
     "test": "jest",
-    "check:package": "publint --strict && attw --pack .",
+    "check:package": "bob build && publint --strict && attw --pack .",
     "check:consumer": "bash scripts/check-consumer.sh"
   },
   "devDependencies": {
