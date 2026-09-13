@@ -22,6 +22,13 @@ decision, will be declined, however good the code is.
 If you are unsure which side of the line a change sits on, open an issue and
 ask before writing the code.
 
+## Stateless by design
+
+The package keeps no state and has no global settings. Every setting is an
+argument, with its default in `src/defaults.js`, and module scope holds frozen
+constants only (a test fails on a module-level `let` or `var`). Please don't
+add a `configure()`, a cache or a singleton; add an option instead.
+
 ## Getting set up
 
 ```bash

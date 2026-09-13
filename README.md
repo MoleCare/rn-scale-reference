@@ -48,6 +48,34 @@ short axis does not. Photos tilted more than `maxTiltDegrees` (30° by default),
 or where the reference is smaller than `minReferencePixels` (40 px), are
 refused rather than measured.
 
+## No state, no global settings
+
+Every method is a pure function of its arguments. The package keeps nothing
+between calls and has no global configuration, so two parts of an app (or two
+libraries) can use different settings without affecting each other. Pass
+settings with the call:
+
+```js
+import {ScaleReference, DEFAULT_OPTIONS} from '@molecare/scale-reference';
+
+const options = {...DEFAULT_OPTIONS, maxTiltDegrees: 20};
+const scale = ScaleReference.fromEllipse(ellipse, diameterMm, options);
+```
+
+An unknown option, or one that is not a positive number, throws a `TypeError`
+rather than being ignored.
+
+Messages from `explain` are plain English. To use your own wording or a
+translation, pass it in, keyed by reason, with `default` for anything else:
+
+```js
+ScaleReference.explain(scale.reason, {
+  reference_too_small: t('scale.tooSmall'),
+  reference_too_tilted: t('scale.tooTilted'),
+  default: t('scale.cannotMeasure'),
+});
+```
+
 ## Limits
 
 Treat every result as an estimate with an error of its own. The main sources:
@@ -78,17 +106,17 @@ accuracy.
 | `USD_QUARTER` | US quarter | 24.26 mm | yes |
 | `USD_PENNY` | US penny | 19.05 mm | yes |
 
-Add or replace references:
+The table is frozen and nothing in the package reads it for you. It is only a
+convenience: `fromEllipse` takes any diameter, so keep your own references in
+your app:
 
 ```js
-import {configure, DEFAULT_REFERENCES} from '@molecare/scale-reference';
+const MY_REFERENCES = {
+  ...DEFAULT_REFERENCES,
+  CUSTOM_DOT_8MM: {label: '8 mm dot', diameterMm: 8, exact: true},
+};
 
-configure({
-  references: {
-    ...DEFAULT_REFERENCES,
-    CUSTOM_DOT_8MM: {label: '8 mm dot', diameterMm: 8, exact: true},
-  },
-});
+ScaleReference.fromEllipse(ellipse, MY_REFERENCES.CUSTOM_DOT_8MM.diameterMm);
 ```
 
 ## Contributing

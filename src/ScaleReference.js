@@ -1,36 +1,34 @@
-import {getConfig} from './config';
+import {DEFAULT_OPTIONS, DEFAULT_REFERENCES} from './defaults';
 
 /**
  * Turning pixels into millimetres, given something of known size in the frame.
  *
  * Scale comes from the major axis alone: a circle photographed off-perpendicular
  * projects to an ellipse whose major axis keeps the true diameter.
+ *
+ * Stateless: every method is a pure function of its arguments. Settings are
+ * passed per call; there is no global configuration to change.
  */
 export default class ScaleReference {
-  /**
-   * Diameters in millimetres of known reference objects.
-   * Override the whole catalog via configure({ references }).
-   */
-  static get REFERENCES() {
-    return getConfig().references;
-  }
+  /** Known reference objects (frozen). Pass any diameter you like instead. */
+  static REFERENCES = DEFAULT_REFERENCES;
 
-  static get MAX_TILT_DEGREES() {
-    return getConfig().maxTiltDegrees;
-  }
+  static MAX_TILT_DEGREES = DEFAULT_OPTIONS.maxTiltDegrees;
 
-  static get MIN_REFERENCE_PIXELS() {
-    return getConfig().minReferencePixels;
-  }
+  static MIN_REFERENCE_PIXELS = DEFAULT_OPTIONS.minReferencePixels;
 
   /**
    * Scale from a detected reference.
    *
    * @param {{majorAxisPx: number, minorAxisPx: number}} ellipse
    * @param {number} diameterMm
+   * @param {{maxTiltDegrees?: number, minReferencePixels?: number}} [options]
+   *   defaults in DEFAULT_OPTIONS
    * @returns {{mmPerPixel: number, tiltDegrees: number, usable: boolean, reason: string|null}|null}
+   * @throws {TypeError} for an unknown option or one that is not a positive number
    */
-  static fromEllipse(ellipse, diameterMm) {
+  static fromEllipse(ellipse, diameterMm, options) {
+    const {maxTiltDegrees, minReferencePixels} = ScaleReference._options(options);
     const major = ScaleReference._positive(ellipse && ellipse.majorAxisPx);
     const minor = ScaleReference._positive(ellipse && ellipse.minorAxisPx);
     const mm = ScaleReference._positive(diameterMm);
@@ -47,9 +45,9 @@ export default class ScaleReference {
       (Math.acos(Math.min(1, shortAxis / longAxis)) * 180) / Math.PI;
 
     let reason = null;
-    if (longAxis < ScaleReference.MIN_REFERENCE_PIXELS) {
+    if (longAxis < minReferencePixels) {
       reason = 'reference_too_small';
-    } else if (tiltDegrees > ScaleReference.MAX_TILT_DEGREES) {
+    } else if (tiltDegrees > maxTiltDegrees) {
       reason = 'reference_too_tilted';
     }
 
@@ -104,7 +102,20 @@ export default class ScaleReference {
     return (larger - smaller) / larger <= tolerance;
   }
 
-  static explain(reason) {
+  /**
+   * A plain English explanation of a refusal.
+   *
+   * @param {string} reason - `reason` from fromEllipse
+   * @param {Object<string, string>} [messages] - your own text (for example a
+   *   translation) keyed by reason; `default` covers any other reason
+   */
+  static explain(reason, messages) {
+    if (messages && typeof messages[reason] === 'string') {
+      return messages[reason];
+    }
+    if (messages && typeof messages.default === 'string') {
+      return messages.default;
+    }
     switch (reason) {
       case 'reference_too_small':
         return 'The reference object is too small in the photo to measure from. Move closer, or place it nearer the subject.';
@@ -113,6 +124,22 @@ export default class ScaleReference {
       default:
         return 'This photo cannot be measured. Place a reference object flat beside the subject and take it square on.';
     }
+  }
+
+  static _options(options) {
+    if (options === undefined || options === null) {
+      return DEFAULT_OPTIONS;
+    }
+    for (const key of Object.keys(options)) {
+      if (!Object.prototype.hasOwnProperty.call(DEFAULT_OPTIONS, key)) {
+        throw new TypeError(`Unknown ScaleReference option "${key}"`);
+      }
+      const value = options[key];
+      if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) {
+        throw new TypeError(`ScaleReference option "${key}" must be a positive number`);
+      }
+    }
+    return {...DEFAULT_OPTIONS, ...options};
   }
 
   static _positive(value) {

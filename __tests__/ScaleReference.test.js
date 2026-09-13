@@ -199,14 +199,72 @@ describe('the reference table', () => {
   });
 
   it('cannot be changed for everyone by mutating a default entry', () => {
-    // getConfig() copies the catalog, but the entries were shared objects: one
-    // module changing a diameter changed it for the whole app.
-    const {DEFAULT_REFERENCES} = require('../src/config');
+    const {DEFAULT_REFERENCES} = require('../src/defaults');
+    expect(Object.isFrozen(DEFAULT_REFERENCES)).toBe(true);
     expect(Object.isFrozen(DEFAULT_REFERENCES.STICKER_10MM)).toBe(true);
     expect(() => {
       'use strict';
       ScaleReference.REFERENCES.STICKER_10MM.diameterMm = 99;
     }).toThrow(TypeError);
+    expect(() => {
+      'use strict';
+      ScaleReference.REFERENCES.CUSTOM = {label: 'x', diameterMm: 5, exact: true};
+    }).toThrow(TypeError);
     expect(ScaleReference.REFERENCES.STICKER_10MM.diameterMm).toBe(10);
+  });
+});
+
+describe('no state: settings go with each call', () => {
+  it('uses the options of one call without changing the next', () => {
+    // A 30 px sticker is refused by default (40 px minimum).
+    const relaxed = ScaleReference.fromEllipse(flat(30), STICKER, {minReferencePixels: 20});
+    const plain = ScaleReference.fromEllipse(flat(30), STICKER);
+
+    expect(relaxed.usable).toBe(true);
+    expect(plain.reason).toBe('reference_too_small');
+  });
+
+  it('lets a caller choose its own tilt limit', () => {
+    expect(ScaleReference.fromEllipse(tilted(200, 25), STICKER, {maxTiltDegrees: 20}).reason).toBe(
+      'reference_too_tilted',
+    );
+    expect(ScaleReference.fromEllipse(tilted(200, 25), STICKER).usable).toBe(true);
+  });
+
+  it('refuses a mistyped or meaningless option instead of ignoring it', () => {
+    expect(() => ScaleReference.fromEllipse(flat(200), STICKER, {maxTilt: 10})).toThrow(/maxTilt/);
+    expect(() => ScaleReference.fromEllipse(flat(200), STICKER, {minReferencePixels: 0})).toThrow(
+      TypeError,
+    );
+    expect(() =>
+      ScaleReference.fromEllipse(flat(200), STICKER, {maxTiltDegrees: '30'}),
+    ).toThrow(TypeError);
+  });
+
+  it('takes the text of an explanation from the caller when given', () => {
+    const messages = {reference_too_small: 'Trop petit.', default: 'Impossible.'};
+
+    expect(ScaleReference.explain('reference_too_small', messages)).toBe('Trop petit.');
+    expect(ScaleReference.explain('something_else', messages)).toBe('Impossible.');
+    expect(ScaleReference.explain('reference_too_small')).toMatch(/too small/);
+  });
+
+  it('exports no global configuration', () => {
+    const api = require('../src');
+    expect(api.configure).toBeUndefined();
+    expect(api.getConfig).toBeUndefined();
+    expect(api.resetConfig).toBeUndefined();
+    expect(Object.isFrozen(api.DEFAULT_OPTIONS)).toBe(true);
+  });
+
+  it('has no module-level variables in its source', () => {
+    // The rule that keeps it stateless: module scope holds constants only.
+    const fs = require('fs');
+    const path = require('path');
+    const srcDir = path.join(__dirname, '..', 'src');
+    for (const file of fs.readdirSync(srcDir).filter(f => f.endsWith('.js'))) {
+      const source = fs.readFileSync(path.join(srcDir, file), 'utf8');
+      expect([file, /^(let|var)\s/m.test(source)]).toEqual([file, false]);
+    }
   });
 });
