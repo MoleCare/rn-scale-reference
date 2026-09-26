@@ -77,6 +77,18 @@ Scale comes from the ellipse's **major axis**. A round object photographed at
 an angle looks oval, but its long axis still spans the true diameter; the
 short axis does not.
 
+### Complete examples
+
+[`examples/`](examples/) has copy-paste starting points, typechecked and run in
+CI so they stay in step with the API:
+
+- [`TapToMeasure.tsx`](examples/TapToMeasure.tsx): a React Native screen that
+  measures with four taps, no detector needed.
+- [`fromDetector.ts`](examples/fromDetector.ts): your detector's ellipse to
+  lengths and areas, with a stricter tilt limit.
+- [`compareTwoPhotos.ts`](examples/compareTwoPhotos.ts): check two photos were
+  taken at a similar distance before showing both sizes.
+
 ## API
 
 | Function                                          | Returns                                                                                                                                                                                                                                        |

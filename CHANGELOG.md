@@ -4,6 +4,14 @@ All notable changes to this package are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Added
+
+- `examples/`: a tap-to-measure React Native screen, a detector-to-millimetres
+  helper, and a two-photo comparison that declines different distances. CI
+  typechecks and runs them. Not part of the published package.
+
 ## 1.0.0
 
 First public release. Breaking changes from 0.x, which was never published.
