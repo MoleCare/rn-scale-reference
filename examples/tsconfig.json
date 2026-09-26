@@ -4,7 +4,7 @@
     "rootDir": "..",
     "jsx": "react-jsx",
     "types": [],
-    "paths": { "@molecare/scale-reference": ["./src/index.ts"] }
+    "paths": { "@molecare/scale-reference": ["../src/index.ts"] }
   },
   "include": ["*.ts", "*.tsx"]
 }
