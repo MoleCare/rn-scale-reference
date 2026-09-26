@@ -1,5 +1,10 @@
 # @molecare/scale-reference
 
+[![CI](https://github.com/MoleCare/rn-scale-reference/actions/workflows/ci.yml/badge.svg)](https://github.com/MoleCare/rn-scale-reference/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@molecare/scale-reference)](https://www.npmjs.com/package/@molecare/scale-reference)
+![types included](https://img.shields.io/npm/types/@molecare/scale-reference)
+[![licence](https://img.shields.io/badge/licence-Apache--2.0-blue)](LICENSE)
+
 Estimate real-world sizes in a photo from an object of known size in the same
 frame: a calibration sticker or a coin. Give it the ellipse your detector found
 around the reference. It returns a scale, tells you when a photo can't be used,
