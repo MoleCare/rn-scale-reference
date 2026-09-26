@@ -1,0 +1,35 @@
+name: New reference object
+description: Suggest a coin, card or sticker of known size.
+labels: [reference-object]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every size in this package comes from a published source, so please
+        include one (a mint, standards body or manufacturer page).
+  - type: input
+    id: name
+    attributes:
+      label: Object
+      placeholder: 'Euro 1 cent coin'
+    validations:
+      required: true
+  - type: input
+    id: size
+    attributes:
+      label: Published size in millimetres
+      placeholder: '16.25 mm diameter'
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source for the size
+      placeholder: 'https://…'
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything that affects accuracy
+      description: Worn edges, several versions in circulation, shiny surfaces and so on.

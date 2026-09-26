@@ -1,0 +1,40 @@
+name: Bug report
+description: An estimate or result that does not match the README.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. **Never attach, paste or link a real photo of
+        a person's skin**, here or anywhere in this repository. The pixel sizes
+        and options you passed, and the result you got back, are enough.
+        Security problems go to info@molecare.co.uk instead (see SECURITY.md).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you called, what you expected, and what came back (the result object is ideal).
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Smallest example
+      description: A few lines of code, with the reference object and options you used.
+      render: ts
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: '1.0.0'
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: React Native or Expo version
+      placeholder: 'React Native 0.80, or Expo SDK 54'
+    validations:
+      required: true
