@@ -189,6 +189,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and the
 [Code of Conduct](CODE_OF_CONDUCT.md). Security problems:
 [SECURITY.md](SECURITY.md).
 
+## Contributors
+
+Thank you to everyone who has helped @molecare/scale-reference.
+
+<!-- readme: contributors,bots/- -start -->
+<!-- readme: contributors,bots/- -end -->
+
+The list is filled by [Contributors](./.github/workflows/contributors.yml) from
+GitHub commits, bots omitted — never hand-maintained, because a stale list is
+worse than none. [Contributor graph](https://github.com/MoleCare/rn-scale-reference/graphs/contributors) ·
+[good first issue](https://github.com/MoleCare/rn-scale-reference/labels/good%20first%20issue)
+
 ## License
 
 Apache-2.0 © MoleCare LTD
