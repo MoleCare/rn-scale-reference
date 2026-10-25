@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Estimate sizes in a photo from an object of known size (a sticker or a coin): pixel-to-millimetre scale, tilt checks and comparability. TypeScript, no native code.",
   "license": "Apache-2.0",
-  "author": "Aleh Bichel <info@molecare.co.uk> (https://www.molecare.co.uk)",
+  "author": "Yauhen Bichel <info@molecare.co.uk> (https://www.molecare.co.uk)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MoleCare/rn-scale-reference.git"
