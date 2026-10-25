@@ -206,4 +206,4 @@ worse than none. [Contributor graph](https://github.com/MoleCare/rn-scale-refere
 
 ## License
 
-Apache-2.0 © MoleCare LTD
+Apache-2.0 © Aleh Bichel
