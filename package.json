@@ -83,7 +83,7 @@
     "publint": "^0.3.25",
     "react-native-builder-bob": "^0.44.1",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.72.0"
+    "typescript-eslint": "^8.72.1"
   },
   "jest": {
     "testEnvironment": "node",
